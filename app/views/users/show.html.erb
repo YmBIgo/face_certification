@@ -1,0 +1,36 @@
+<h2><%= @user.full_name %></h2>
+<% if Rails.env.development? %>
+  <h3><%= @azure_response %></h3>
+  <h4><%= @training_result %></h4>
+<% end %>
+<hr>
+<div class="row">
+<% if @u_photos.present? %>
+  <% @u_photos.each do |p| %>
+    <div class="col-xs-6 col-sm-4 col-lg-2">
+      <%= image_tag p.aws_url, :style => "width:200px;height:200px" %>
+      <br>
+      <% if @user.id == current_user.id %>
+        <% unless p.azure_id.present? %>
+          <a href="/u_photos/<%= p.id %>/learn" class="btn btn-primary" style="margin:15px 0">登録する</a>
+        <% else %>
+          <a href="/u_photos/<%= p.id %>/unlearn" class="btn btn-danger" style="margin:15px 0">登録解除する</a>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <h3>画像は登録されていません</h3>
+<% end %>
+</div>
+<hr>
+<% if @user.id == current_user.id %>
+  <a href="/u_photos/new" class="btn btn-info">写真を登録する</a>
+  <br><br>
+  <a href="/users/<%= @user.id %>/edit" class="btn btn-success">会員情報を編集する</a>
+  <br><br>
+  <a href="/users/<%= current_user.id %>/authenticate" class="btn btn-primary">認証を設定する</a>
+  <br><br>
+<% end %>
+<a href="/users" class="btn btn-warning">会員一覧に戻る</a>
+<br><br>

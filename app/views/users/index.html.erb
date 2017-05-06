@@ -1,0 +1,7 @@
+<h2>会員一覧</h2>
+<hr>
+<% @users.each do |u| %>
+  <%= link_to u.full_name,
+              user_path(u.id) %>
+  <br>
+<% end %>
