@@ -1,4 +1,21 @@
 class Users::PasswordsController < Devise::PasswordsController
+
+  def new
+    redirect_to root_path, alert: "it is unpermitted to access this page."
+  end
+
+  def create
+    redirect_to root_path, alert: "it is unpermitted to create password."
+  end
+
+  def edit
+    redirect_to root_path, alert: "it is unpermitted to edit password."
+  end
+
+  def update
+    redirect_to root_path, alert: "it is unpermitted to update password."
+  end
+
   # GET /resource/password/new
   # def new
   #   super

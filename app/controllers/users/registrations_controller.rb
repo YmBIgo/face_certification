@@ -2,6 +2,35 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
+  def new
+    redirect_to '/users/sign_in', alert: 'you can not regiter new user.'
+  end
+
+  def create
+    redirect_to '/users/sign_in', alert: 'you can not regiter new user.'
+  end
+
+  def edit
+    redirect_to root_path, alert: "it is unpermitted to edit user."
+  end
+
+  def update
+    redirect_to root_path, alert: "it is unpermitted to edit user."
+  end
+
+  def destroy
+    redirect_to root_path, alert: "it is unpermitted to destroy user."
+  end
+
+  def cancel
+    redirect_to root_path, alert: "it is unpermitted to cancel user."
+  end
+
+  private
+  def account_update_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :current_password)
+  end
+
   # GET /resource/sign_up
   # def new
   #   super

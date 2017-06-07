@@ -11,13 +11,21 @@ class UPhotosController < ApplicationController
   end
 
   def create
-    @u_photo = UPhoto.create(uphoto_params.merge(:user_id => current_user.id))
-    azure_face_url = "https:" + @u_photo.aws_url
-    azure_response = azure_set_face_image_to_user(@u_photo.user.azure_id, azure_face_url)
-    azure_face_id = azure_json(azure_response, "persistedFaceId")
-    @u_photo.update(:azure_id => azure_face_id)
-    flash[:notice] = "registeration complete!"
-    redirect_to user_path(@u_photo.user_id)
+    # file_path = params[:u_photo][:face_image].tempfile
+    # File.read(file_path) do |f|
+    #   p f
+    # end
+    if Rails.env.development?
+      @u_photo = UPhoto.create(uphoto_params.merge(:user_id => current_user.id))
+      azure_face_url = "https:" + @u_photo.aws_url
+      azure_response = azure_set_face_image_to_user(@u_photo.user.azure_id, azure_face_url)
+      azure_face_id = azure_json(azure_response, "persistedFaceId")
+      @u_photo.update(:azure_id => azure_face_id)
+      flash[:notice] = "registeration complete!"
+    else
+      flash[:alert] = "it is unpermitted to register photos in production environment."
+    end
+    redirect_to user_path(current_user.id)
   end
 
   def index
@@ -56,7 +64,7 @@ class UPhotosController < ApplicationController
 
   private
   def uphoto_params
-    params.require(:u_photo).permit(:user_id, :azure_id, :aws_url)
+    params.require(:u_photo).permit(:user_id, :aws_url)
   end
 
   def set_u_photo

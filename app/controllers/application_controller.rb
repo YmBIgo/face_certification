@@ -94,6 +94,7 @@ class ApplicationController < ActionController::Base
   'personGroupId':'sfc_takedaken_web'
 }"
     azure_varify_result = get_response(uri, request)
+    # logger.info azure_varify_result
     return azure_json(azure_varify_result, "isIdentical")
   end
 

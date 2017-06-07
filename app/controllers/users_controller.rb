@@ -13,6 +13,7 @@ class UsersController < ApplicationController
         current_user.update(:azure_id => azure_json(@azure_response, "personId") )
       end
     end
+    # logger.error "\nhoge\n"
     @u_photos = UPhoto.where(:user_id => @user.id)
   end
 
@@ -24,13 +25,18 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.update(user_params)
+    if Rails.env.development?
+      @user.update(user_params)
+      flash[:notice] = "editing completed!"
+    else
+      flash[:alert] = "it is unpermitted to update user in production environment."
+    end
     redirect_to edit_user_path(@user.id)
   end
 
   def authenticate
     if current_user.user_authenticate_user_or_not == true
-      current_user.update(:user_authenticate_user_or_not => false)
+      current_user.update(:user_authenticate_user_or_not => false, :valid_user_or_not => false)
       flash[:alert] = "unset user face authentication."
       redirect_to user_path(current_user.id)
     else
