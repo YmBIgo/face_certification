@@ -39,6 +39,7 @@ class UPhotosController < ApplicationController
     unless @u_photo.azure_id.present?
       azure_face_url = "https:" + @u_photo.aws_url
       azure_response = azure_set_face_image_to_user(@u_photo.user.azure_id, azure_face_url)
+      logger.debug azure_response
       azure_face_id = azure_json(azure_response, "persistedFaceId")
       @u_photo.update(:azure_id => azure_face_id)
       flash[:notice] = "registeration complete!"
@@ -52,7 +53,8 @@ class UPhotosController < ApplicationController
   def unlearn
     if @u_photo.azure_id.present?
       azure_face_url = @u_photo.azure_id
-      @azure_response = azure_delete_user_face_image(@u_photo.user.azure_id, azure_face_url)
+      azure_response = azure_delete_user_face_image(@u_photo.user.azure_id, azure_face_url)
+      logger.debug azure_response
       @u_photo.update(:azure_id => "")
       flash[:notice] = "registeration complete!"
     else
