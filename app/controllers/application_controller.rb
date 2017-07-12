@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
     response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       http.request(request)
     end
+    logger.debug(response.body)
     return response.body
   end
 

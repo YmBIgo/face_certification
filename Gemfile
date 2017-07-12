@@ -33,6 +33,9 @@ gem 'execjs'
 
 gem 'devise'
 
+gem 'exif'
+gem 'exifr'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
